@@ -44,13 +44,12 @@ class QuantumSystem:
             if qubit.is_released():
                 raise RuntimeError("Operation on released qubit is not allowed.")
         indices = [qubit.index for qubit in qubits]
-        dims = list(range(self.bits))
-        for i, dim in enumerate(indices):
-            dims[dim], dims[i] = dims[i], dims[dim]
+        dims = indices + [i for i in range(self.bits) if i not in indices]
         state = self.state.transpose(*dims).reshape(-1, int(2**len(dims[:-len(indices)])))
         state = np.array(np.matmul(matrix, state))
         shape = [2] * self.bits
         state = state.reshape(*shape)
+        dims = [indices.index(i) if i in indices else i+len(indices)-1 for i in range(self.bits)]
         self.state = state.transpose(*dims)
         amp = (self.state ** 2).sum() ** 0.5
         self.state /= amp

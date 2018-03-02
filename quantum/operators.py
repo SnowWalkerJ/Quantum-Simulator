@@ -61,7 +61,6 @@ def Phase(theta):
 
 
 # Controlled not
-# CNot = MatrixOperation(np.matrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]], dtype="complex"))
 CNot = X.controlled()
 
 
