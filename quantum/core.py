@@ -49,7 +49,16 @@ class QuantumSystem:
         state = np.array(np.matmul(matrix, state))
         shape = [2] * self.bits
         state = state.reshape(*shape)
-        dims = [indices.index(i) if i in indices else i+len(indices)-1 for i in range(self.bits)]
+        # dims = [indices.index(i) if i in indices else i+len(indices)-1 for i in range(self.bits)]
+        dims = []
+        used = len(indices)
+        for i in range(self.bits):
+            if i in indices:
+                dims.append(indices.index(i))
+                used -= 1
+            else:
+                dims.append(i + used)
+
         self.state = state.transpose(*dims)
         amp = (self.state ** 2).sum() ** 0.5
         self.state /= amp
